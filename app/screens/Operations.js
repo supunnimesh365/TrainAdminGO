@@ -8,9 +8,12 @@ class Operations extends Component {
     };
   }
 
-  // color scheme
-  // profile details changing
-  // payment options
+  //topup
+  //addstations-withuuid
+  //addfarefortrips
+  //addbookingtrips
+  //viewbookingtrips
+  //viewbookings
 
   render() {
     return (

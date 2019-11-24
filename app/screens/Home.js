@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { View, Text, Image, Picker, ActivityIndicator, TouchableHighlight } from 'react-native';
+import { View, Text, Image, Picker, StyleSheet, ActivityIndicator, Dimensions, StatusBar, TouchableHighlight } from 'react-native';
 import firebase from './../constants/firebase';
 import { Card, ButtonGroup } from 'react-native-elements';
+import QRCode from 'react-native-qrcode-svg';
+import uuid from 'uuid-random';
 
-
+const { width, height } = Dimensions.get('window')
 
 
 class Home extends Component {
@@ -13,10 +15,12 @@ class Home extends Component {
       details_gather: false,
       stations: [],
       successLoad: false,
-      selectedStation: ''
+      selectedStation: [],
+      QRCode: ''
     };
     this.setStations = this.setStations.bind(this);
     this.selectStations = this.selectStations.bind(this);
+    this.setQR = this.setQR.bind(this);
   }
 
   setStations(stations) {
@@ -25,6 +29,10 @@ class Home extends Component {
 
   selectStations(selectedStation) {
     this.setState({ selectedStation })
+  }
+
+  setQR(QRCode) {
+    this.setState({ QRCode })
   }
 
 
@@ -42,6 +50,27 @@ class Home extends Component {
   }
 
   getQRCode = () => {
+    let { selectedStation } = this.state
+    console.log(selectedStation);
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    today = dd + '-' + mm + '-' + yyyy;
+    var value = {
+      "station_id": selectedStation.id,
+      "station_name": selectedStation.name,
+      "date": today,
+      "uid": uuid()
+    }
+
+    value = JSON.stringify(value);
+    this.setQR(value);
+    this.setState({ details_gather: true });
+    // "station_id":6767683,
+    // "station_name":"Maradana",
+    // "date":"2019.10.22",
+    // "uid":12345678903
 
   }
 
@@ -53,10 +82,10 @@ class Home extends Component {
   // payment options
 
   render() {
-
+    const { stations } = this.state;
     if (this.state.successLoad == false) {
       return (
-        <View>
+        <View style={styles.container}>
           <StatusBar
             backgroundColor="#ffffff"
             barStyle="dark-content"
@@ -74,13 +103,13 @@ class Home extends Component {
             <Picker mode="dropdown"
               selectedValue={this.state.selectedStation}
               onValueChange={(itemValue) =>
-                this.selectStation(itemValue)
+                this.selectStations(itemValue)
               }
             >
               {
                 stations.map((item) => {
                   return (
-                    <Picker.Item label={item.name} value={item.name + item.id} key={item.name} />
+                    <Picker.Item label={item.name} value={item} key={item.name} />
                   );
                 })
               }
@@ -96,8 +125,14 @@ class Home extends Component {
     }
     else {
       return (
-        <View>
-          <Text>Here goes the QR Code</Text>
+        <View style={styles.container}>
+          <QRCode
+            style={styles.QR}
+            value={this.state.QRCode}
+            size = {200}
+            logoSize={100}
+            logoBackgroundColor='transparent'
+          />
         </View>
       )
     }
@@ -105,3 +140,47 @@ class Home extends Component {
 }
 
 export default Home;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+  },
+  button: {
+    backgroundColor: 'black',
+    height: 70,
+    width: 200,
+    alignSelf: 'center',
+    height: 50,
+    borderRadius: 35,
+    alignItems: 'center',
+    margin: 10,
+    justifyContent: 'center',
+  },
+  QRcontain: {
+    position: 'absolute',
+    left: 0,
+    // alignContent: "center",
+    alignItems: "center",
+    right: 0,
+
+    //bottom: height / 2,
+    // height: 150,
+    padding: 20,
+  },
+  QR: {
+    height: 150,
+    width: 150,
+    borderRadius: 25,
+    borderWidth: 1,
+    marginHorizontal: 10,
+    paddingLeft: 10,
+    marginVertical: 5,
+    borderColor: 'rgb(0,0,0)',
+  },
+  buttontxt: {
+    color: 'white',
+  }
+});

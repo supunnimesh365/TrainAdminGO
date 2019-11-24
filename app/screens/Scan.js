@@ -8,9 +8,7 @@ class Scan extends Component {
     };
   }
 
-  // color scheme
-  // profile details changing
-  // payment options
+  //scan bookings and dbstatus 1 => 0
 
   render() {
     return (
