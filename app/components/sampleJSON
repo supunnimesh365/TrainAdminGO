@@ -1,0 +1,165 @@
+{
+    "station_id":6767673,
+    "station_name":"Kandana",
+    "date":"2019.10.22",
+    "uid":12345678900
+}
+
+{
+    "station_id":6767683,
+    "station_name":"Maradana",
+    "date":"2019.10.22",
+    "uid":12345678903
+}
+
+Maradana6767683Kandana6767673
+
+firebase.database().ref("fare/" + key1 + '/' + this.state.classVal + '/').on("value", (snapshot) => {
+          var fare = snapshot.val();
+          console.log(fare)
+          const totFare = this.state.passengersCount * fare.full + this.state.passengersCountHalf * fare.half;
+          const balFare = this.state.Wallet_Balance - totFare;
+          if (balFare < 0) {
+            Alert.alert(
+              'Reminder',
+              'Your balance is now minus value, To continue with the service PLEASE RECHARGE now',
+              [
+                { text: 'OK', onPress: () => console.log('OK Pressed') },
+              ],
+              { cancelable: false },
+            );
+
+          }
+          else if (balFare < 100) {
+            Alert.alert(
+              'Reminder',
+              'Your balance is less than Rs.100, To continue the service PLEASE RECHARGE soon ',
+              [
+                { text: 'OK', onPress: () => console.log('OK Pressed') },
+              ],
+              { cancelable: false },
+            );
+          }
+          else {
+            Alert.alert(
+              'Warning',
+              'This is not a correct QR code',
+              [
+                { text: 'OK', onPress: () => console.log('OK Pressed') },
+              ],
+              { cancelable: false },
+            );
+            console.log(this.state.Wallet_Balance);
+            console.log('Total Fare', totFare, 'Balance Fare', balFare);
+          }
+          let { Start_Station, Start_Station_Name, End_Station, End_Station_Name, classVal, usrid, passengersCount, passengersCountHalf } = this.state;
+
+
+          firebase.database().ref("trips/" + this.state.tripID).set({
+            user:usrid,
+            start_station: Start_Station,
+            start_station_name: Start_Station_Name,
+            end_station: obj.station_id,
+            end_station_name: obj.station_name,
+            success: true,
+            charge: totFare,
+            class: classVal,
+            full_passenger_count: passengersCount,
+            half_passenger_count: passengersCountHalf
+          })
+          firebase.database().ref('users/' + usrid).update({
+            account_balance: balFare
+          })
+        }, function (error) {
+          console.log("Error: " + error.code);
+        });
+
+
+
+        {
+          journey
+        }
+
+        import React, { Component } from 'react';
+import { View, StyleSheet,Picker} from 'react-native'
+
+const data=[
+  {"name":"stephen",
+  "id":"1234"},
+  {"name":"kate"},
+  {"name":"michael"}
+]
+export default class App extends Component {
+
+   render() {
+      return (
+         <View style={styles.container}>
+           <View style={{width:'60%',flexDirection: 'row',justifyContent: 'center'}}>
+             <Picker mode="dropdown" style={{ height:20, backgroundColor: 'white',width: '80%'}}>
+               {
+                 data.map((item) =>{
+                   return(
+                   <Picker.Item  label={item.name} value={item.name} key={item.name}/>
+                   );
+                 })
+               }
+             </Picker>
+           </View>
+         </View>
+      )
+   }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#ddd'
+  },
+})
+
+
+export default class GenderDropdownComponent extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            dataSource: []
+        };
+    }
+    async get_firebase_list(){
+        var items = [];
+        firebase.database().ref('lists/gender').on('value', function(snapshot) {
+            snapshot.forEach(function(childSnapshot) {
+              var childKey = childSnapshot.key;
+              var childData = childSnapshot.val();
+              items.push(childData);
+            }); 
+            console.log("items_load: " + items);
+            return items;
+        });
+    }
+    async componentWillMount(){
+        this.setState({
+            dataSource : await this.get_firebase_list()
+        })
+        console.log("items: " + this.state.dataSource);
+    }
+
+    render() {
+        return (
+            <Picker
+                onValueChange={(itemValue, itemIndex) => this.setState({gender: itemValue})}>
+                {this.state.dataSource.map((item, index) => {
+                    return (<Picker.Item label={item} value={index} key={index}/>) 
+                })}
+            </Picker>
+        );
+    }
+}
+
+https://stackoverflow.com/questions/48971199/load-values-for-a-dropdown-menu-from-firebase
+
+https://aboutreact.com/react-native-datepicker/
+
+https://www.npmjs.com/package/react-native-numeric-input
