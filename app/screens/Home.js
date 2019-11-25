@@ -14,7 +14,8 @@ class Home extends Component {
     this.state = {
       details_gather: false,
       stations: [],
-      successLoad: false,
+      successLoad: true,
+      buttonView: true,
       selectedStation: [],
       QRCode: ''
     };
@@ -35,19 +36,38 @@ class Home extends Component {
     this.setState({ QRCode })
   }
 
-
-  componentDidMount() {
-    var stations = [];
-    firebase.database().ref("stations/").on("value", (snapshot) => {
-      snapshot.forEach((childSnapshot) => {
-        var childkey = childSnapshot.key
-        var childvalue = childSnapshot.val()
-        stations.push(childvalue);
-      })
-      this.setStations(stations);
-      this.setState({ successLoad: true });
+  backtoMain = () =>{
+    this.setState({
+      details_gather: false,
+      stations: [],
+      successLoad: true,
+      buttonView: true,
+      selectedStation: [],
+      QRCode: ''
     })
   }
+
+  // backtoMain = () => {
+  //   this.setState({
+  //     details_gather: false,
+  //     stations: [],
+  //     successLoad: false,
+  //     selectedStation: [],
+  //     QRCode: ''
+  //   })
+  // }
+
+  // componentDidUpdate = () =>{
+  //   this.setState({
+  //     stations:[]
+  //   })
+  // }
+
+  componentDidMount = () => {
+    // this.backtoMain();
+    
+  }
+
 
   getQRCode = () => {
     let { selectedStation } = this.state
@@ -74,6 +94,20 @@ class Home extends Component {
 
   }
 
+  getStations = () =>{
+    this.setState({ successLoad: false });
+    var stations = [];
+    firebase.database().ref("stations/").on("value", (snapshot) => {
+      snapshot.forEach((childSnapshot) => {
+        var childkey = childSnapshot.key
+        var childvalue = childSnapshot.val()
+        stations.push(childvalue);
+      })
+      this.setStations(stations);
+      this.setState({ successLoad: true });
+      this.setState({ buttonView: false });
+    })
+  }
 
 
 
@@ -82,8 +116,23 @@ class Home extends Component {
   // payment options
 
   render() {
-    const { stations } = this.state;
-    if (this.state.successLoad == false) {
+    let { stations } = this.state;
+    if (this.state.buttonView == true && this.state.successLoad == true) {
+      return (
+        <View style={styles.container}>
+          <StatusBar
+            backgroundColor="#ffffff"
+            barStyle="dark-content"
+          />
+          <TouchableHighlight
+            onPress={this.getStations}
+            style={styles.button}>
+            <Text style={styles.buttontxt}>Show All Stations </Text>
+          </TouchableHighlight>
+        </View>
+      )
+    }
+    else if (this.state.successLoad == false) {
       return (
         <View style={styles.container}>
           <StatusBar
@@ -98,6 +147,10 @@ class Home extends Component {
     else if (this.state.details_gather == false) {
       return (
         <View>
+          <StatusBar
+            backgroundColor="#ffffff"
+            barStyle="dark-content"
+          />
           <Card>
             <Text> Please select the station this machine is located in </Text>
             <Picker mode="dropdown"
@@ -126,13 +179,22 @@ class Home extends Component {
     else {
       return (
         <View style={styles.container}>
+          <StatusBar
+            backgroundColor="#ffffff"
+            barStyle="dark-content"
+          />
           <QRCode
             style={styles.QR}
             value={this.state.QRCode}
-            size = {200}
+            size={200}
             logoSize={100}
             logoBackgroundColor='transparent'
           />
+          <TouchableHighlight
+              onPress={this.backtoMain}
+              style={styles.button}>
+              <Text style={styles.buttontxt}>Back to Home</Text>
+            </TouchableHighlight>
         </View>
       )
     }

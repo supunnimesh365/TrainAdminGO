@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 
-class Explorer extends Component {
+class addFares extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -17,4 +17,4 @@ class Explorer extends Component {
   }
 }
 
-export default Explorer;
+export default addFares;

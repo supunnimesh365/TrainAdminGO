@@ -7,26 +7,47 @@
  */
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
-import { createSwitchNavigator, createAppContainer, createDrawerNavigator, createBottomTabNavigator, createStackNavigator } from 'react-navigation';
+import {Platform,Image, StyleSheet, SafeAreaView, ScrollView, Dimensions, Text, View} from 'react-native';
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
+import { createSwitchNavigator, createAppContainer, createDrawerNavigator, createBottomTabNavigator, createStackNavigator, DrawerItems } from 'react-navigation';
 import Icon from 'react-native-vector-icons/Ionicons'
 import Icon1 from 'react-native-vector-icons/AntDesign'
 import Home from './app/screens/Home'
 import Scan from './app/screens/Scan'
-import Operations from './app/screens/Operations'
+import Topup from './app/screens/Topup'
 import Splash from './app/screens/Splash'
 import WelcomeScreen from './app/screens/Welcome'
 import Signup from './app/screens/Signup'
 import Login from './app/screens/Login'
+import addStations from './app/screens/addStations'
+import addFares from './app/screens/addFares'
+import addBookingDetails from './app/screens/addBookingDetails'
 
-export default class App extends Component {
-  render() {
+class App extends Component{
+
+  render(){
     return (
       <AppContainer/>
     );
   }
 }
+
+export default App;
+
+const headerComponent = props => {
+  return(
+  <SafeAreaView style={{flex:1}}>
+    <View style={{height:200, backgroundColor:'white', alignItems:"center", justifyContent:"center"}}>
+      <Image source = {require('./app/assets/logo.png')} style={{height:120, width
+      :120, borderRadius: 20, backgroundColor:"grey"}}/>
+      <Text>TrainGO v1.0</Text>
+      <Text>eazy pay, eazy way</Text>
+    </View>
+    <ScrollView> 
+      <DrawerItems {...props}/>
+    </ScrollView>
+  </SafeAreaView>
+)}
 
 const DashboardTabNavigator = createMaterialBottomTabNavigator(
   {
@@ -48,9 +69,9 @@ const DashboardTabNavigator = createMaterialBottomTabNavigator(
             </View>),
         },
       },
-      Operations: { screen: Operations,
+      Topup: { screen: Topup,
         navigationOptions:{
-          tabBarLabel:'Operations',
+          tabBarLabel:'Topup',
           tabBarIcon: ({ tintColor}) => (
             <View>
               <Icon1 style={[{color:tintColor}]} size={20} name='book'/>
@@ -84,15 +105,102 @@ const DashboardStackNavigator = createStackNavigator({
         size={30} name='md-menu'/>
     }
   }
-})
+});
+
+const addStationStackNavigator = createStackNavigator({
+  addStations : {
+    screen:addStations
+  }
+},{
+  defaultNavigationOptions:({navigation})=>{
+    return{
+      headerLeft:
+        <Icon style={{paddingLeft:10, color:'#000000'}}
+        onPress={()=>navigation.openDrawer()}
+        size={30} name='md-menu'/>,
+        headerTitle:'Logging Out'
+    }
+  }
+});
+
+const addFaresStackNavigator = createStackNavigator({
+  addFares : {
+    screen:addFares
+  }
+},{
+  defaultNavigationOptions:({navigation})=>{
+    return{
+      headerLeft:
+        <Icon style={{paddingLeft:10, color:'#000000'}}
+        onPress={()=>navigation.openDrawer()}
+        size={30} name='md-menu'/>,
+        headerTitle:'Logging Out'
+    }
+  }
+});
+
+const addBookingDetailsStackNavigator = createStackNavigator({
+  addBookingDetails : {
+    screen:addBookingDetails
+  }
+},{
+  defaultNavigationOptions:({navigation})=>{
+    return{
+      headerLeft:
+        <Icon style={{paddingLeft:10, color:'#000000'}}
+        onPress={()=>navigation.openDrawer()}
+        size={30} name='md-menu'/>,
+        headerTitle:'Logging Out'
+    }
+  }
+});
 
 const AppDrawerNavigator = createDrawerNavigator({
   Dashboard:{
-    screen:DashboardStackNavigator
+    screen:DashboardStackNavigator,
+    navigationOptions:{
+      title:'Home',
+      drawerIcon: ({ tintColor}) => (
+        <View>
+          <Icon1 style={[{color:tintColor}]} size={20} name='home'/>
+        </View>),
+    },
+  },
+  addFares:{
+    screen:addFaresStackNavigator,
+    navigationOptions:{
+      title:'Home',
+      drawerIcon: ({ tintColor}) => (
+        <View>
+          <Icon1 style={[{color:tintColor}]} size={20} name='home'/>
+        </View>),
+    },
+  },
+  addStations:{
+    screen:addStationStackNavigator,
+    navigationOptions:{
+      title:'Home',
+      drawerIcon: ({ tintColor}) => (
+        <View>
+          <Icon1 style={[{color:tintColor}]} size={20} name='home'/>
+        </View>),
+    },
+  },
+  addBookingDetails:{
+    screen:addBookingDetailsStackNavigator,
+    navigationOptions:{
+      title:'Home',
+      drawerIcon: ({ tintColor}) => (
+        <View>
+          <Icon1 style={[{color:tintColor}]} size={20} name='home'/>
+        </View>),
+    },
   },
   // Signup:{
   //   screen:Signup
   // }
+},{
+  contentComponent:headerComponent
 });
 
 const AppSwitchNavigator = createSwitchNavigator({
@@ -100,7 +208,11 @@ const AppSwitchNavigator = createSwitchNavigator({
   Welcome:{screen:WelcomeScreen},
   Dashboard1:{screen:AppDrawerNavigator},
   Signup:{screen:Signup},
-  Login:{screen:Login}
+  Login:{screen:Login},
+  Dashboard:{screen:DashboardStackNavigator},
+  addBookingDetails: {screen:addBookingDetails},
+  addFares:{screen:addFares},
+  addStations:{screen:addStations},
 });
 
 
