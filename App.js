@@ -24,6 +24,8 @@ import addFares from './app/screens/addFares'
 import addBookingDetails from './app/screens/addBookingDetails'
 import ContactUs from './app/screens/ContactUs';
 import Logout from './app/screens/Logout';
+import PasswordReset from './app/screens/PasswordReset';
+
 
 class App extends Component{
 
@@ -269,6 +271,7 @@ const AppSwitchNavigator = createSwitchNavigator({
   ContactUs:{screen:ContactUs},
   Logout: {screen:Logout},
   addStations:{screen:addStations},
+  PasswordReset:{screen:PasswordReset}
 });
 
 

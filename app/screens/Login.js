@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Alert, TextInput, StyleSheet, Dimensions, TouchableOpacity, Image, StatusBar } from 'react-native';
+import { View, Text, Alert, TextInput, StyleSheet, Dimensions, ActivityIndicator, TouchableOpacity, Image, StatusBar } from 'react-native';
 import firebase from './../constants/firebase';
 
 
@@ -12,7 +12,8 @@ export default class Login extends Component {
       email: '',
       password: '',
       errorMessage: '',
-      success: false
+      success: false,
+      loading: false
     };
   }
 
@@ -47,6 +48,7 @@ export default class Login extends Component {
       );
     }
     else {
+      this.setState({ loading: true })
       firebase
         .auth()
         .signInWithEmailAndPassword(email, password)
@@ -55,7 +57,7 @@ export default class Login extends Component {
           'Error',
           error.message,
           [
-            { text: 'OK', onPress: () => console.log('OK Pressed') },
+            { text: 'OK', onPress: () => this.setState({ loading: false }) },
           ],
           { cancelable: false },
         ))
@@ -64,39 +66,57 @@ export default class Login extends Component {
 
 
   render() {
-    return (
-      <View style={styles.container}>
-        <View style={{ ...StyleSheet.absoluteFill }}>
-          <Image source={require('../assets/wall2.png')}
-            style={{ flex: 1, width: null, height: null }} />
-        </View>
-        <StatusBar
-          backgroundColor="#000000"
-          barStyle="light-content"
-        />
-        <View style={styles.txtContainer}>
-        <Image source={require('./../assets/icon1.png')} />
-          <TextInput
-            placeholder='E-mail'
-            style={styles.textInput}
-            placeholderTextColor='black'
-            onChangeText={val => this.onChangeText('email', val)}
+    if (this.state.loading == true) {
+      return (
+        <View style={styles.container}>
+          <StatusBar
+            translucent
+            backgroundColor="#ffffff"
+            barStyle="dark-content"
           />
-          <TextInput
-            placeholder='PASSWORD'
-            style={styles.textInput}
-            placeholderTextColor='black'
-            onChangeText={val => this.onChangeText('password', val)}
-          />
-          <TouchableOpacity style={styles.button} onPress={() => this.Login()}>
-            <Text>LOGIN</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.buttonlink} onPress={() => this.props.navigation.navigate('Signup')}>
-            <Text>NOT REGISTERED</Text>
-          </TouchableOpacity>
+          <Image source={require('./../assets/Train05.png')} />
+          <ActivityIndicator size="large" color="blue" />
         </View>
-      </View>
-    );
+      )
+    }
+    else {
+      return (
+        <View style={styles.container}>
+          <View style={{ ...StyleSheet.absoluteFill }}>
+            <Image source={require('../assets/wall2.png')}
+              style={{ flex: 1, width: null, height: null }} />
+          </View>
+          <StatusBar
+            backgroundColor="#000000"
+            barStyle="light-content"
+          />
+          <View style={styles.txtContainer}>
+            <Image source={require('./../assets/icon1.png')} />
+            <TextInput
+              placeholder='E-mail'
+              style={styles.textInput}
+              placeholderTextColor='black'
+              onChangeText={val => this.onChangeText('email', val)}
+            />
+            <TextInput
+              placeholder='PASSWORD'
+              style={styles.textInput}
+              placeholderTextColor='black'
+              onChangeText={val => this.onChangeText('password', val)}
+            />
+            <TouchableOpacity style={styles.button} onPress={() => this.Login()}>
+              <Text>LOGIN</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.buttonlink} onPress={() => this.props.navigation.navigate('Signup')}>
+              <Text>NOT REGISTERED</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.buttonlink} onPress={() => this.props.navigation.navigate('PasswordReset')}>
+              <Text>can not remember password</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      );
+    }
   }
 }
 
@@ -130,7 +150,7 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: 'rgba(114, 178, 242, 0.6)',
     height: 40,
-    width:'20%',
+    width: '20%',
     marginHorizontal: width / 8,
     borderRadius: 15,
     alignItems: 'center',
