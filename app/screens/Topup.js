@@ -49,33 +49,46 @@ class Topup extends Component {
 
 
   open_QR_Code_Scanner = () => {
-    var that = this;
-    if (Platform.OS === 'android') {
-      async function requestCameraPermission() {
-        try {
-          const granted = await PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.CAMERA, {
-            'title': 'Camera App Permission',
-            'message': 'Camera App needs access to your camera '
-          }
-          )
-          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-
-            that.setState({ QR_Code_Value: '' });
-            that.setState({ Start_Scanner: true });
-          } else {
-            alert("CAMERA permission denied");
-          }
-        } catch (err) {
-          alert("Camera permission err", err);
-          console.warn(err);
-        }
-      }
-      requestCameraPermission();
-    } else {
-      that.setState({ QR_Code_Value: '' });
-      that.setState({ Start_Scanner: true });
+    if (this.state.amount == 0) {
+      Alert.alert(
+        'Warning',
+        'You are going torecharge with 0 amount',
+        [
+          { text: 'OK', onPress: () => console.log('OK Pressed') },
+        ],
+        { cancelable: false },
+      );
     }
+    else {
+      var that = this;
+      if (Platform.OS === 'android') {
+        async function requestCameraPermission() {
+          try {
+            const granted = await PermissionsAndroid.request(
+              PermissionsAndroid.PERMISSIONS.CAMERA, {
+              'title': 'Camera App Permission',
+              'message': 'Camera App needs access to your camera '
+            }
+            )
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+
+              that.setState({ QR_Code_Value: '' });
+              that.setState({ Start_Scanner: true });
+            } else {
+              alert("CAMERA permission denied");
+            }
+          } catch (err) {
+            alert("Camera permission err", err);
+            console.warn(err);
+          }
+        }
+        requestCameraPermission();
+      } else {
+        that.setState({ QR_Code_Value: '' });
+        that.setState({ Start_Scanner: true });
+      }
+    }
+
   }
 
   onQR_Code_Scan_Done = (QR_Code) => {
@@ -94,7 +107,7 @@ class Topup extends Component {
       account_balance: newBal
     })
     Alert.alert(
-      'Success'+ newBal,
+      'Success' + newBal,
       'Your Booked Trip has successfully Completed',
       [
         { text: 'OK', onPress: () => console.log('OK Pressed') },
@@ -190,7 +203,7 @@ class Topup extends Component {
             }
           />
           <TouchableOpacity
-            onPress={this.backtoMain}
+            onPress={()=>this.setState({ Start_Scanner: false })}
             style={styles.button1}>
             <Text style={styles.buttontxt}>
               Back To Scanner

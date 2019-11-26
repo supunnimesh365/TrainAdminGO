@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, Picker, TouchableHighlight, StyleSheet, StatusBar, ActivityIndicator, Image } from 'react-native';
+import { View, Text, TextInput, Picker, Alert, TouchableHighlight, StyleSheet, StatusBar, ActivityIndicator, Image } from 'react-native';
 import uuid from 'uuid-random';
 import firebase from './../constants/firebase';
 import { Card, ButtonGroup } from 'react-native-elements';

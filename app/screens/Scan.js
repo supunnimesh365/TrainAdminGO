@@ -144,7 +144,7 @@ class Scan extends Component {
             }
           />
           <TouchableOpacity
-            onPress={this.backtoMain}
+            onPress={()=>this.setState({ Start_Scanner: false })}
             style={styles.button1}>
             <Text style={styles.buttontxt}>
               Back To Scanner
