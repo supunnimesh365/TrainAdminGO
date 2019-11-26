@@ -24,7 +24,7 @@ class addStations extends Component {
   }
 
   addNewStation = () => {
-    if(this.state.newStation == ''){
+    if (this.state.newStation == '') {
       Alert.alert(
         'Error',
         'Empty Value of Station',
@@ -33,19 +33,19 @@ class addStations extends Component {
         ],
         { cancelable: false },
       );
-    }else{
+    } else {
       firebase.database().ref('stations/' + uuid()).set({
         id: uuid(),
         name: this.state.newStation
       })
       this.setState({
-        stations:[]
+        stations: []
       })
       this.componentDidMount()
     }
   }
 
-  componentDidMount = () =>{
+  componentDidMount = () => {
     var stations = [];
     firebase.database().ref("stations/").on("value", (snapshot) => {
       snapshot.forEach((childSnapshot) => {
@@ -88,12 +88,14 @@ class addStations extends Component {
                 })
               }
             </Picker>
-            <TextInput
-              placeholder='Input New Station'
-              style={styles.textInput}
-              placeholderTextColor='black'
-              onChangeText={val => this.onChangeText('newStation', val)}
-            />
+            <View style={styles.txtContainer}>
+              <TextInput
+                placeholder='Input New Station'
+                style={styles.textInput}
+                placeholderTextColor='black'
+                onChangeText={val => this.onChangeText('newStation', val)}
+              />
+            </View>
             <TouchableHighlight
               onPress={this.addNewStation}
               style={styles.button}>
@@ -135,6 +137,22 @@ const styles = StyleSheet.create({
     //bottom: height / 2,
     // height: 150,
     padding: 20,
+  },
+  txtContainer: {
+    position: 'relative',
+    left: 0,
+    right: 0,
+    height: 150,
+    padding: 20,
+  },
+  textInput: {
+    height: 50,
+    borderRadius: 25,
+    borderWidth: 1,
+    marginHorizontal: 10,
+    paddingLeft: 10,
+    marginVertical: 5,
+    borderColor: 'rgb(0,0,0)',
   },
   QR: {
     height: 150,

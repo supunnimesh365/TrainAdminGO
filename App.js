@@ -22,6 +22,8 @@ import Login from './app/screens/Login'
 import addStations from './app/screens/addStations'
 import addFares from './app/screens/addFares'
 import addBookingDetails from './app/screens/addBookingDetails'
+import ContactUs from './app/screens/ContactUs';
+import Logout from './app/screens/Logout';
 
 class App extends Component{
 
@@ -42,6 +44,7 @@ const headerComponent = props => {
       :120, borderRadius: 20, backgroundColor:"grey"}}/>
       <Text>TrainGO v1.0</Text>
       <Text>eazy pay, eazy way</Text>
+      <Text>Admin Panel</Text>
     </View>
     <ScrollView> 
       <DrawerItems {...props}/>
@@ -118,7 +121,7 @@ const addStationStackNavigator = createStackNavigator({
         <Icon style={{paddingLeft:10, color:'#000000'}}
         onPress={()=>navigation.openDrawer()}
         size={30} name='md-menu'/>,
-        headerTitle:'Logging Out'
+        headerTitle:'Add a Station'
     }
   }
 });
@@ -134,7 +137,7 @@ const addFaresStackNavigator = createStackNavigator({
         <Icon style={{paddingLeft:10, color:'#000000'}}
         onPress={()=>navigation.openDrawer()}
         size={30} name='md-menu'/>,
-        headerTitle:'Logging Out'
+        headerTitle:'Add a new Fare'
     }
   }
 });
@@ -150,10 +153,41 @@ const addBookingDetailsStackNavigator = createStackNavigator({
         <Icon style={{paddingLeft:10, color:'#000000'}}
         onPress={()=>navigation.openDrawer()}
         size={30} name='md-menu'/>,
-        headerTitle:'Logging Out'
+        headerTitle:'Add a new Booking'
     }
   }
 });
+const LogoutStackNavigator = createStackNavigator({
+  Logout : {
+    screen:Logout
+  }
+},{
+  defaultNavigationOptions:({navigation})=>{
+    return{
+      headerLeft:
+        <Icon style={{paddingLeft:10, color:'#000000'}}
+        onPress={()=>navigation.openDrawer()}
+        size={30} name='md-menu'/>,
+      headerTitle:'Logging Out'
+    }
+  }
+})
+
+const ContactStackNavigator = createStackNavigator({
+  ContactUs : {
+    screen:ContactUs
+  }
+},{
+  defaultNavigationOptions:({navigation})=>{
+    return{
+      headerLeft:
+        <Icon style={{paddingLeft:10, color:'#000000'}}
+        onPress={()=>navigation.openDrawer()}
+        size={30} name='md-menu'/>,
+      headerTitle:'Contact Us'
+    }
+  }
+})
 
 const AppDrawerNavigator = createDrawerNavigator({
   Dashboard:{
@@ -169,7 +203,7 @@ const AppDrawerNavigator = createDrawerNavigator({
   addFares:{
     screen:addFaresStackNavigator,
     navigationOptions:{
-      title:'Home',
+      title:'Add a new Fare',
       drawerIcon: ({ tintColor}) => (
         <View>
           <Icon1 style={[{color:tintColor}]} size={20} name='home'/>
@@ -179,7 +213,7 @@ const AppDrawerNavigator = createDrawerNavigator({
   addStations:{
     screen:addStationStackNavigator,
     navigationOptions:{
-      title:'Home',
+      title:'Add a new Station',
       drawerIcon: ({ tintColor}) => (
         <View>
           <Icon1 style={[{color:tintColor}]} size={20} name='home'/>
@@ -189,10 +223,30 @@ const AppDrawerNavigator = createDrawerNavigator({
   addBookingDetails:{
     screen:addBookingDetailsStackNavigator,
     navigationOptions:{
-      title:'Home',
+      title:'Add a new Booking Data',
       drawerIcon: ({ tintColor}) => (
         <View>
           <Icon1 style={[{color:tintColor}]} size={20} name='home'/>
+        </View>),
+    },
+  },
+  ContactUs:{
+    screen:ContactStackNavigator,
+    navigationOptions:{
+      title:'Contact Us',
+      drawerIcon: ({ tintColor}) => (
+        <View>
+          <Icon1 style={[{color:tintColor}]} size={20} name='phone'/>
+        </View>),
+    },
+  },
+  Logout:{
+    screen:LogoutStackNavigator,
+    navigationOptions:{
+      title:'Log Out',
+      drawerIcon: ({ tintColor}) => (
+        <View>
+          <Icon1 style={[{color:tintColor}]} size={20} name='logout'/>
         </View>),
     },
   },
@@ -212,6 +266,8 @@ const AppSwitchNavigator = createSwitchNavigator({
   Dashboard:{screen:DashboardStackNavigator},
   addBookingDetails: {screen:addBookingDetails},
   addFares:{screen:addFares},
+  ContactUs:{screen:ContactUs},
+  Logout: {screen:Logout},
   addStations:{screen:addStations},
 });
 
