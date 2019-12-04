@@ -37,7 +37,7 @@ class Welcome extends Component {
           barStyle="light-content"
         />
         <Animated.View style={[styles.animationView, { opacity: this.state.fadeValue }]}>
-          <Image source={require('./../assets/Train05.png')} />
+          <Image source={require('./../assets/Train05admin.png')} />
         </Animated.View>
 
         {/* <View style={{ ...StyleSheet.absoluteFill }}>

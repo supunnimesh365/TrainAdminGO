@@ -42,9 +42,9 @@ const headerComponent = props => {
   return(
   <SafeAreaView style={{flex:1}}>
     <View style={{height:200, backgroundColor:'white', alignItems:"center", justifyContent:"center"}}>
-      <Image source = {require('./app/assets/logo.png')} style={{height:120, width
+      <Image source = {require('./app/assets/logoadmin.png')} style={{height:120, width
       :120, borderRadius: 20, backgroundColor:"grey"}}/>
-      <Text>TrainGO v1.0</Text>
+      <Text>TrainAdminGO v1.0</Text>
       <Text>eazy pay, eazy way</Text>
       <Text>Admin Panel</Text>
     </View>

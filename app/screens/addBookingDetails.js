@@ -166,8 +166,8 @@ class addBookingDetails extends Component {
             backgroundColor="#ffffff"
             barStyle="dark-content"
           />
-          <Image source={require('./../assets/Train05.png')} />
-          <ActivityIndicator size="large" color="blue" />
+          <Image source={require('./../assets/Train05admin.png')} />
+          <ActivityIndicator size="large" color="grey" />
         </View>
       )
     }
@@ -309,7 +309,7 @@ class addBookingDetails extends Component {
                     width: 80,
                     height: 55,
                     borderRadius: 27.5,
-                    backgroundColor: 'blue', // rgb(102,134,205)
+                    backgroundColor: 'grey', // rgb(102,134,205)
                   }}
                   switchOn={this.state.switchOn4}
                   onPress={this.onPress4}

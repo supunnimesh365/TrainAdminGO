@@ -15,12 +15,12 @@ class ContactUs extends Component {
     return (
       <View style={styles.container}>
         <Card style={styles.container} title="Contact Us">
-          <Image source={require('./../assets/Train05.png')} />
+          <Image source={require('./../assets/Train05admin.png')} />
           <View style={{alignItems: "center", alignContent: "center"}}>
             <Text style={{fontWeight:"bold"}}> +9470 489 40 53 </Text>
             <Text style={{fontWeight:"bold"}}> traingo@admin.lk </Text>
             <Text style={{fontWeight:"bold"}}> www.traingo.lk </Text>
-            <Text style={{fontWeight:"bold"}} > 3, Negombo Road, Wattala, Sri-Lanka</Text>
+            <Text style={{fontWeight:"bold"}} > 533, Kapuwagara Road, Kandana, Sri-Lanka</Text>
           </View>
         </Card>
       </View>

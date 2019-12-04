@@ -175,8 +175,8 @@ export default class Signup extends Component {
                         backgroundColor="#ffffff"
                         barStyle="dark-content"
                     />
-                    <Image source={require('./../assets/Train05.png')} />
-                    <ActivityIndicator size="large" color="blue" />
+                    <Image source={require('./../assets/Train05admin.png')} />
+                    <ActivityIndicator size="large" color="grey" />
                 </View>
             )
         }
