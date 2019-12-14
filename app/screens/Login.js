@@ -100,6 +100,7 @@ export default class Login extends Component {
             />
             <TextInput
               placeholder='PASSWORD'
+              secureTextEntry={true}
               style={styles.textInput}
               placeholderTextColor='black'
               onChangeText={val => this.onChangeText('password', val)}

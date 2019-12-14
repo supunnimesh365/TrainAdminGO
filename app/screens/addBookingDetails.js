@@ -13,6 +13,7 @@ class addBookingDetails extends Component {
       stations: [],
       switchOn4: false,
       successLoad: false,
+      buttonload: false,
       selectedStation1: '',
       selectedStation2: '',
       newStation: '',
@@ -85,7 +86,7 @@ class addBookingDetails extends Component {
     else {
       Alert.alert(
         'Success',
-        'Added a new Booking' + this.state.class1f,
+        'Added a new Booking',
         [
           { text: 'OK', onPress: () => console.log('OK Pressed') },
         ],
@@ -132,19 +133,26 @@ class addBookingDetails extends Component {
           },
         },
         "daily": val1,
-          "fixedSeats": parseInt(this.state.totseats),
-          "seats": parseInt(this.state.totseats),
-          "time": this.state.time,
-          "trainID": this.state.trainID
+        "fixedSeats": parseInt(this.state.totseats),
+        "seats": parseInt(this.state.totseats),
+        "time": this.state.time,
+        "trainID": this.state.trainID
       })
-      this.setState({
-        stations: []
-      })
-      this.componentDidMount()
+      // this.setState({
+      //   //stations: []
+      // })
+      // this.componentDidMount()
     }
   }
 
   componentDidMount = () => {
+    this.setState({ successLoad: true });
+  }
+
+  searchTrains = () => {
+    this.setState({ successLoad: false });
+    console.log('............')
+    this.setStations([]);
     var stations = [];
     firebase.database().ref("stations/").on("value", (snapshot) => {
       snapshot.forEach((childSnapshot) => {
@@ -154,6 +162,7 @@ class addBookingDetails extends Component {
       })
       this.setStations(stations);
       this.setState({ successLoad: true });
+      this.setState({ buttonload: false });
     })
   }
 
@@ -181,6 +190,11 @@ class addBookingDetails extends Component {
           <ScrollView>
             <Card title="Please Input New Booking Details">
               <Text>Here are the available stations for now</Text>
+              <TouchableHighlight
+                onPress={this.searchTrains}
+                style={styles.button}>
+                <Text style={styles.buttontxt}>Search for Available Stations</Text>
+              </TouchableHighlight>
               <Picker mode="dropdown"
                 selectedValue={this.state.selectedStation1}
                 onValueChange={(itemValue) =>
@@ -210,7 +224,7 @@ class addBookingDetails extends Component {
                 }
               </Picker>
             </Card>
-            <Card title="Enter Time and Seats Count">
+            <Card title="Class 1 details">
               {/* <Text>Class 1 details</Text> */}
               <View style={styles.txtContainer}>
                 <TextInput
@@ -229,7 +243,7 @@ class addBookingDetails extends Component {
                 />
               </View>
             </Card>
-            <Card title="Enter Time and Seats Count">
+            <Card title="Class 2 details">
               {/* <Text>Class 2 details</Text> */}
               <View style={styles.txtContainer}>
                 <TextInput
@@ -248,7 +262,7 @@ class addBookingDetails extends Component {
                 />
               </View>
             </Card>
-            <Card title="Enter Time and Seats Count">
+            <Card title="Class 3 details">
               {/* <Text>Class 3 details</Text> */}
               <View style={styles.txtContainer}>
                 <TextInput
@@ -267,7 +281,7 @@ class addBookingDetails extends Component {
                 />
               </View>
             </Card>
-            <Card title="Enter Time and Seats Count">
+            <Card title="Enter Weakly and Seats Count">
               {/* <Text>Time, Availability and TrainID</Text> */}
               <View style={styles.txtContainer}>
                 <TextInput
@@ -320,7 +334,7 @@ class addBookingDetails extends Component {
 
               </View>
             </Card>
-            <Card title="Enter Time and Seats Count">
+            <Card title="Enter Time and trainID">
               <View style={styles.txtContainer}>
                 <TextInput
                   placeholder='Time'

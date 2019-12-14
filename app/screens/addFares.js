@@ -40,16 +40,7 @@ class addFares extends Component {
 
 
   componentDidMount = () => {
-    var stations = [];
-    firebase.database().ref("stations/").on("value", (snapshot) => {
-      snapshot.forEach((childSnapshot) => {
-        var childkey = childSnapshot.key
-        var childvalue = childSnapshot.val()
-        stations.push(childvalue);
-      })
-      this.setStations(stations);
       this.setState({ successLoad: true });
-    })
   }
 
 
@@ -106,6 +97,24 @@ class addFares extends Component {
     }
   }
 
+
+  searchTrains = () => {
+    this.setState({ successLoad: false });
+    console.log('............')
+    this.setStations([]);
+    var stations = [];
+    firebase.database().ref("stations/").on("value", (snapshot) => {
+      snapshot.forEach((childSnapshot) => {
+        var childkey = childSnapshot.key
+        var childvalue = childSnapshot.val()
+        stations.push(childvalue);
+      })
+      this.setStations(stations);
+      this.setState({ successLoad: true });
+      this.setState({ buttonload: false });
+    })
+  }
+
   render() {
     let { stations } = this.state;
     if (this.state.successLoad == false) {
@@ -130,6 +139,11 @@ class addFares extends Component {
           <ScrollView>
             <Card title="Please Input New Fare Details">
               <Text>Here are the available stations for now</Text>
+              <TouchableHighlight
+                onPress={this.searchTrains}
+                style={styles.button}>
+                <Text style={styles.buttontxt}>Search for Available Stations</Text>
+              </TouchableHighlight>
               <Picker mode="dropdown"
                 selectedValue={this.state.selectedStation1}
                 onValueChange={(itemValue) =>
